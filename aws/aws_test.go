@@ -31,7 +31,7 @@ func TestUpload(t *testing.T) {
 		return
 	}
 
-	key := "/putobject/00.m3u8"
+	key := "putobject/00.m3u8"
 
 	// read file to be uploaded
 	f, _ := os.OpenFile("media.m3u8", os.O_RDONLY, os.ModePerm)
@@ -54,7 +54,7 @@ func TestDeleteObject(t *testing.T) {
 		return
 	}
 
-	key := "/deleteobject/media.m3u8"
+	key := "deleteobject/media.m3u8"
 
 	// read file to be uploaded
 	f, _ := os.OpenFile("media.m3u8", os.O_RDONLY, os.ModePerm)
@@ -83,9 +83,10 @@ func TestDelete(t *testing.T) {
 		return
 	}
 
+	// !!!!! no prefix slash, otherwise files will not be deleted
 	keys := []string{
-		"/deleteobjects/00.m3u8",
-		"/deleteobjects/01.m3u8",
+		"deleteobjects/00.m3u8",
+		"deleteobjects/01.m3u8",
 	}
 
 	// read file to be uploaded
