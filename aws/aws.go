@@ -15,6 +15,8 @@ import (
 )
 
 var (
+	// DisableSSL Set this to `true` to disable SSL when sending requests. Defaults to `false`
+	DisableSSL = true
 	// DeleteRequestTimeout Set timeout for s3 delete request
 	DeleteRequestTimeout = 10 * time.Second
 )
@@ -27,7 +29,7 @@ func InitS3(info *common.S3Info) (s *s3.S3, err error) {
 		Endpoint:    aws.String(info.Domain),
 		Region:      aws.String(info.Region),
 
-		// DisableSSL:                    aws.Bool(DisableSSL),
+		DisableSSL: aws.Bool(DisableSSL),
 		// S3ForcePathStyle:              aws.Bool(ForcePathStyle),
 		// S3DisableContentMD5Validation: aws.Bool(DisableContentMD5Validation),
 	}
