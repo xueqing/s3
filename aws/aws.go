@@ -3,6 +3,7 @@ package aws
 import (
 	"bytes"
 	"context"
+	"io"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -63,6 +64,26 @@ func Upload(data []byte, info *common.S3Info, key string) (err error) {
 		return
 	}
 	logger.Infof("Upload: upload data to s3 bucket(%v) key(%s) success", info.Bucket, key)
+	return
+}
+
+// Download ...
+func Download(info *common.S3Info, key string) (r io.ReadCloser, err error) {
+	s, err := InitS3(info)
+	if err != nil {
+		return
+	}
+	input := &s3.GetObjectInput{
+		Bucket: aws.String(info.Bucket),
+		Key:    aws.String(key),
+	}
+	out, err := s.GetObject(input)
+	if err != nil {
+		logger.Warningf("Download: GetObject s3(%v) key(%v) error(%v)", info, key, err)
+		return
+	}
+	logger.Infof("Download: read data from s3 bucket(%v) key(%s) length(%v) success", info.Bucket, key, *out.ContentLength)
+	r = out.Body
 	return
 }
 
