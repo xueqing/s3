@@ -35,7 +35,7 @@ func TestUpload(t *testing.T) {
 	key := "putobject/00.m3u8"
 
 	// read file to be uploaded
-	f, _ := os.OpenFile("media.m3u8", os.O_RDONLY, os.ModePerm)
+	f, _ := os.OpenFile("../resource/media.m3u8", os.O_RDONLY, os.ModePerm)
 	defer f.Close()
 	body := make([]byte, 2048)
 	n, _ := f.Read(body)
@@ -58,7 +58,7 @@ func TestDeleteObject(t *testing.T) {
 	key := "deleteobject/media.m3u8"
 
 	// read file to be uploaded
-	f, _ := os.OpenFile("media.m3u8", os.O_RDONLY, os.ModePerm)
+	f, _ := os.OpenFile("../resource/media.m3u8", os.O_RDONLY, os.ModePerm)
 	defer f.Close()
 	body := make([]byte, 2048)
 	n, _ := f.Read(body)
