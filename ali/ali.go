@@ -2,6 +2,7 @@ package ali
 
 import (
 	"bytes"
+	"io"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/google/logger"
@@ -38,6 +39,27 @@ func Upload(data []byte, info *common.S3Info, key string) (err error) {
 		return
 	}
 	logger.Infof("Upload: upload data to s3 bucket(%v) key(%s) success", info.Bucket, key)
+	return
+}
+
+// Download ...
+func Download(info *common.S3Info, key string) (r io.ReadCloser, err error) {
+	cli, err := InitS3(info)
+	if err != nil {
+		return
+	}
+	bucket, err := cli.Bucket(info.Bucket)
+	if err != nil {
+		logger.Warningf("Download: get Bucket from s3(%v) error(%v)", info, err)
+		return
+	}
+
+	r, err = bucket.GetObject(key)
+	if err != nil {
+		logger.Warningf("Download: GetObject s3(%v) key(%v) error(%v)", info, key, err)
+		return
+	}
+	logger.Infof("Download: read data from s3 bucket(%v) key(%s) success", info.Bucket, key)
 	return
 }
 

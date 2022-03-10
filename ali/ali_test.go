@@ -50,6 +50,44 @@ func TestUpload(t *testing.T) {
 	}
 }
 
+func TestDownload(t *testing.T) {
+	TestUpload(t)
+	info, err := parseS3Info()
+	if err != nil {
+		t.Errorf("TestDownload: parse s3 info error(%v)", err)
+		return
+	}
+
+	key := "putobject/00.m3u8"
+
+	// save file downloaded from s3
+	f, err := os.Create("download.m3u8")
+	if err != nil {
+		t.Errorf("TestDownload: create file error(%v)", err)
+		return
+	}
+	defer f.Close()
+
+	// upload with right s3 info and key
+	r, err := Download(&info, key)
+	if err != nil {
+		t.Errorf("TestDownload: download error(%v)", err)
+		return
+	}
+	body := make([]byte, 2048)
+	for {
+		n, err := r.Read(body)
+		if n != 0 {
+			t.Logf("TestDownload: read body len(%v)", n)
+			f.Write(body[:n])
+		}
+		if err != nil {
+			t.Logf("TestDownload: read body error(%v)", err)
+			break
+		}
+	}
+}
+
 func TestDeleteObject(t *testing.T) {
 	info, err := parseS3Info()
 	if err != nil {
