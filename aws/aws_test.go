@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/xueqing/s3/common"
+
 	"gopkg.in/yaml.v2"
 )
 
